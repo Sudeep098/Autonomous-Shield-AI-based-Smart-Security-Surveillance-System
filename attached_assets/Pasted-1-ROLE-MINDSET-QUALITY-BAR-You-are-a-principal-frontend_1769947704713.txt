@@ -1,0 +1,511 @@
+1. ROLE, MINDSET & QUALITY BAR
+
+You are a principal frontend architect and senior product designer with experience building mission-critical dashboards for defense systems, command centers, security operations, and enterprise SaaS platforms.
+
+You design interfaces used by:
+
+Security operators
+
+Analysts
+
+Command staff
+
+Decision makers
+
+Your work prioritizes:
+
+Clarity over flash
+
+Reliability over decoration
+
+Calm, confident UI
+
+Human-centric design
+
+Zero visual noise
+
+Your task is to convert a technical PPT describing an AI-Based Security & Surveillance system (“Autonomous Shield”) into a fully functional, high-fidelity FRONTEND APPLICATION.
+
+This is NOT a prototype UI.
+This should look like a real product that could be deployed today.
+
+2. ABSOLUTE CONSTRAINTS (VERY IMPORTANT)
+
+You MUST follow these rules:
+
+Frontend only
+
+No backend
+
+No APIs
+
+No real authentication
+
+Use mock data and simulated state
+
+Zero errors
+
+No console errors
+
+No broken navigation
+
+No unfinished components
+
+Every page must load correctly
+
+Professional color system
+
+❌ No blue-dominant themes
+
+❌ No neon colors
+
+❌ No cyberpunk styling
+
+❌ No hacker aesthetics
+
+✅ Neutral, grounded palette
+
+✅ Charcoal, graphite, off-white, muted greens, sand, slate, warm gray
+
+✅ Red only for critical alerts
+
+✅ Yellow/amber for warnings
+
+✅ Green only for confirmed safe states
+
+Human-made feel
+
+Subtle imperfections
+
+Natural spacing
+
+Calm motion
+
+Thoughtful typography
+
+No “template-looking” layouts
+
+3. TECHNOLOGY STACK (LATEST & BEST)
+Core Framework
+
+Next.js (App Router)
+
+React 18+
+
+TypeScript (strict mode)
+
+Styling
+
+Tailwind CSS
+
+Custom design tokens
+
+CSS variables
+
+No default Tailwind colors
+
+Fully custom palette
+
+Motion & UX
+
+Framer Motion
+
+Natural easing (no bounce, no elastic)
+
+Motion used sparingly
+
+Emphasis on continuity, not spectacle
+
+State Management
+
+Zustand
+
+Mock state
+
+Simulated real-time updates using timers
+
+Data Visualization
+
+Recharts or Visx
+
+Minimal grids
+
+Muted axes
+
+No bright chart colors
+
+Icons
+
+Lucide Icons
+
+Thin stroke
+
+Consistent sizing
+
+4. DESIGN PHILOSOPHY
+
+This UI should feel like:
+
+A command center
+
+A control room
+
+A serious operational tool
+
+Design principles:
+
+Large readable text
+
+High contrast without harshness
+
+Clear hierarchy
+
+Minimal gradients
+
+No glassmorphism
+
+No glowing effects
+
+No heavy shadows
+
+Animations:
+
+Short (120–180ms)
+
+Ease-in-out
+
+Never distracting
+
+Never playful
+
+5. INFORMATION ARCHITECTURE
+Primary Navigation Sections
+
+Overview
+
+Live Monitoring
+
+Alerts & Incidents
+
+Analytics
+
+Assets & Devices
+
+Activity Logs
+
+Reports
+
+Communications
+
+Settings
+
+Navigation must be:
+
+Sidebar on desktop
+
+Collapsible
+
+Icon + text
+
+Keyboard accessible
+
+6. PAGE-BY-PAGE REQUIREMENTS
+6.1 Landing / System Entry Page
+
+Serious tone
+
+Product name: “Autonomous Shield”
+
+Short mission statement
+
+Status indicator (“System Operational”)
+
+Mock sign-in button
+
+No marketing fluff
+
+6.2 Overview Dashboard
+
+Purpose: Instant situational awareness
+
+Include:
+
+Total monitored zones
+
+Active feeds
+
+Alerts today
+
+Critical incidents
+
+System health
+
+Layout:
+
+Grid-based
+
+Calm cards
+
+No animation overload
+
+Cards update via mock timers.
+
+6.3 Live Monitoring Page
+
+Purpose: Operational control
+
+Include:
+
+Simulated camera feeds (static placeholders)
+
+Feed list on left
+
+Selected feed main view
+
+Overlay UI:
+
+Bounding boxes (simulated)
+
+Confidence %
+
+Object type
+
+Location label
+
+UI behavior:
+
+Smooth transitions between feeds
+
+No video autoplay errors
+
+Mock detections appear/disappear
+
+6.4 Alerts & Incidents Page
+
+Purpose: Decision making
+
+Include:
+
+Timeline-based alert list
+
+Severity filters:
+
+Critical
+
+High
+
+Medium
+
+Informational
+
+Each alert shows:
+
+Type
+
+Time
+
+Confidence
+
+Location
+
+Status
+
+Critical alerts visually distinct but not loud.
+
+6.5 Incident Detail Page
+
+Purpose: Context & response
+
+Include:
+
+Incident summary
+
+Detection data
+
+Mock snapshot
+
+Timeline of events
+
+Recommended actions (textual)
+
+Status update buttons (frontend only)
+
+6.6 Analytics Page
+
+Purpose: Insight over time
+
+Include:
+
+Daily detection volume
+
+False positive rate (mock)
+
+Response time trend
+
+System load
+
+Charts:
+
+Minimal
+
+Muted
+
+Professional
+
+Clear legends
+
+6.7 Assets & Devices
+
+Purpose: Infrastructure visibility
+
+Include:
+
+List of drones / cameras
+
+Status indicators
+
+Last ping time
+
+Location
+
+Health state
+
+Device cards expandable with more details.
+
+6.8 Activity Logs
+
+Purpose: Audit & traceability
+
+Include:
+
+Chronological logs
+
+Filters by type
+
+Search
+
+Pagination
+
+Clear timestamps
+
+Logs feel “system-generated”, not social-app-like.
+
+6.9 Reports Page
+
+Purpose: Management & review
+
+Include:
+
+Predefined reports
+
+Date range selector
+
+Export buttons (disabled visually)
+
+Clean layout
+
+6.10 Communications / Command Notes
+
+Purpose: Internal coordination
+
+Include:
+
+Operator notes
+
+Shift handover messages
+
+Simple threaded UI
+
+Calm typography
+
+No emojis. No casual styling.
+
+6.11 Settings
+
+Purpose: Control without clutter
+
+Include:
+
+Theme (light / dark neutral)
+
+Notification preferences
+
+Display density
+
+Time format
+
+Mock user profile
+
+7. INTERACTIONS & MICRO-UX
+
+Hover states are subtle
+
+Focus states visible
+
+Buttons feel tactile but restrained
+
+Loading states use skeletons, not spinners
+
+Empty states are informative, not playful
+
+8. PERFORMANCE & QUALITY
+
+60fps scrolling
+
+No layout shift
+
+No flashing elements
+
+No unnecessary re-renders
+
+Clean component structure
+
+Code must be:
+
+Readable
+
+Modular
+
+Commented
+
+Organized logically
+
+9. OUTPUT REQUIREMENTS
+
+Deliver:
+
+Complete frontend project
+
+All pages implemented
+
+Working navigation
+
+Mock data system
+
+No TODOs
+
+No placeholders saying “coming soon”
+
+This must be demo-ready.
+
+10. FUTURE-READY (DO NOT IMPLEMENT)
+
+Mention in comments only:
+
+Backend integration
+
+WebSockets
+
+AI inference pipeline
+
+Authentication
+
+Edge device APIs
+
+11. FINAL QUALITY CHECK (MENTAL MODEL)
+
+Before finalizing, ask yourself:
+
+“Would a defense contractor, government lab, or enterprise security firm accept this UI as credible?”
+
+If the answer is not yes, refine it.

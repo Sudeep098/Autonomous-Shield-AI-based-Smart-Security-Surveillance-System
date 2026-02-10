@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Shield - Live Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .header {
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 2px solid #10b981;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .status {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .status-dot.connected {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+        .status-dot.disconnected {
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        .panel {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        .panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #10b981;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+            padding-bottom: 0.5rem;
+        }
+        .video-feed {
+            width: 100%;
+            border-radius: 4px;
+            background: #000;
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-feed img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .stat-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+        .detections-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 0.5rem;
+        }
+        .detection-item {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            border-left: 3px solid;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .detection-item.critical {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .detection-item.suspicious {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .detection-item.normal {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .detection-item .label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .detection-item .confidence {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+        .info p {
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <span>🛡️</span> Autonomous Shield - Live Monitor
+        </h1>
+        <div class="status">
+            <span id="status-text">Connecting...</span>
+            <div class="status-dot disconnected" id="status-dot"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div>
+            <div class="panel">
+                <h2>Live Video Feed</h2>
+                <div class="video-feed">
+                    <img id="video-stream" src="" alt="Initializing video stream..." style="display:none;">
+                    <div id="video-placeholder" style="color: #64748b;">
+                        Waiting for video stream...
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top: 1rem;">
+                <h2>System Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Status</h3>
+                        <div class="value" id="stat-status">---</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>FPS</h3>
+                        <div class="value" id="stat-fps">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Resolution</h3>
+                        <div class="value" id="stat-res">---</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Detections</h3>
+                        <div class="value" id="stat-detections">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel">
+                <h2>Live Detections</h2>
+                <div class="detections-list" id="detections-list">
+                    <p style="color: #64748b; text-align: center; padding: 2rem;">
+                        No detections yet...
+                    </p>
+                </div>
+            </div>
+
+            <div class="info">
+                <h3 style="color: #3b82f6; margin-bottom: 0.5rem;">ℹ️ System Info</h3>
+                <p><strong>Backend:</strong> http://localhost:8000</p>
+                <p><strong>AI Engine:</strong> YOLOv8 Real-time Detection</p>
+                <p><strong>Connection:</strong> WebSocket + MJPEG Stream</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let reconnectInterval = null;
+        let totalDetections = 0;
+
+        function updateStatus(connected) {
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            
+            if (connected) {
+                statusDot.className = 'status-dot connected';
+                statusText.textContent = 'Connected';
+            } else {
+                statusDot.className = 'status-dot disconnected';
+                statusText.textContent = 'Disconnected';
+            }
+        }
+
+        function initVideoStream() {
+            const videoImg = document.getElementById('video-stream');
+            const placeholder = document.getElementById('video-placeholder');
+            
+            videoImg.src = 'http://localhost:8000/api/ai/video_feed?' + new Date().getTime();
+            
+            videoImg.onload = function() {
+                videoImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            };
+            
+            videoImg.onerror = function() {
+                videoImg.style.display = 'none';
+                placeholder.style.display = 'block';
+                placeholder.textContent = 'Video stream unavailable';
+            };
+        }
+
+        function connectWebSocket() {
+            console.log('Connecting to WebSocket...');
+            ws = new WebSocket('ws://localhost:8000/api/ai/stream');
+
+            ws.onopen = function() {
+                console.log('WebSocket connected');
+                updateStatus(true);
+                clearInterval(reconnectInterval);
+                initVideoStream();
+            };
+
+            ws.onclose = function() {
+                console.log('WebSocket disconnected');
+                updateStatus(false);
+                reconnectInterval = setInterval(connectWebSocket, 5000);
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                updateStatus(false);
+            };
+
+            ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    if (data.type === 'frame_analysis') {
+                        updateStats(data);
+                        updateDetections(data.detections || []);
+                    }
+                } catch (e) {
+                    console.error('Error parsing WebSocket data:', e);
+                }
+            };
+        }
+
+        function updateStats(data) {
+            document.getElementById('stat-status').textContent = data.stats?.status || 'unknown';
+            document.getElementById('stat-fps').textContent = data.stats?.fps || '0';
+            document.getElementById('stat-res').textContent = data.stats?.res || '---';
+        }
+
+        function updateDetections(detections) {
+            const list = document.getElementById('detections-list');
+            
+            if (detections.length === 0) {
+                list.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No detections in current frame</p>';
+                return;
+            }
+
+            totalDetections += detections.length;
+            document.getElementById('stat-detections').textContent = totalDetections;
+
+            list.innerHTML = '';
+            detections.forEach(detection => {
+                const item = document.createElement('div');
+                item.className = `detection-item ${detection.threat_level}`;
+                item.innerHTML = `
+                    <div>
+                        <div class="label">${detection.class}</div>
+                        <div class="confidence">Confidence: ${(detection.confidence * 100).toFixed(0)}%</div>
+                    </div>
+                    <div style="text-align: right; font-size: 0.75rem; color: #64748b;">
+                        <div>${detection.threat_level.toUpperCase()}</div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Initialize
+        connectWebSocket();
+
+        // Refresh video feed every 30 seconds (in case stream dies)
+        setInterval(() => {
+            const videoImg = document.getElementById('video-stream');
+            if (videoImg.style.display !== 'none') {
+                videoImg.src = 'http://localhost:8000/api/ai/video_feed?' + new Date().getTime();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

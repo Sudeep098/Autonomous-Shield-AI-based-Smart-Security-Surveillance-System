@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Mode by Default */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
+  --radius: 0.5rem;
+
+  /* Status Colors */
+  --status-critical: 0 84% 60%;
+  --status-warning: 38 92% 50%;
+  --status-ok: 150 90% 40%;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+}
+
+.dark {
+  /* Neutral Palette - Serious Command Center */
+  --background: 0 0% 10%;
+  --foreground: 0 0% 95%;
+
+  --card: 0 0% 13%;
+  --card-foreground: 0 0% 95%;
+
+  --popover: 0 0% 13%;
+  --popover-foreground: 0 0% 95%;
+
+  --primary: 0 0% 90%;
+  --primary-foreground: 0 0% 10%;
+
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 95%;
+
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 75%;
+
+  --accent: 0 0% 25%;
+  --accent-foreground: 0 0% 95%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 0 0% 40%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-white/20;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tight font-medium;
+  }
+}
+
+@layer utilities {
+  .text-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* GPU Acceleration Utilities */
+  .gpu-layer {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  /* Forced Brightness Overrides for Common Dim Utility Classes */
+  /* This ensures user request for "brighter fonts" is met globally without refactoring everything */
+  .text-zinc-500 {
+    color: #a1a1aa !important;
+    /* Forces zinc-500 to look like zinc-400 */
+  }
+
+  .text-zinc-400 {
+    color: #e4e4e7 !important;
+    /* Forces zinc-400 to look like zinc-200 */
+  }
+
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Custom Scrollbar for dark theme */
+  /* Custom Scrollbar - Premium HUD Style */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(34, 197, 94, 0.2);
+    border-radius: 3px;
+    border: 1px solid rgba(34, 197, 94, 0.1);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(34, 197, 94, 0.5);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+  }
+
+  /* Tactical Borders */
+  .border-tactical {
+    @apply border border-white/10 shadow-[0_0_0_1px_rgba(0, 0, 0, 0.5)];
+  }
+
+  /* Scanline effect for video feeds */
+  .scanline {
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0) 50%,
+        rgba(0, 0, 0, 0.1) 50%,
+        rgba(0, 0, 0, 0.1));
+    background-size: 100% 4px;
+    animation: scanline 10s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scanline {
+    0% {
+      background-position: 0 0;
+    }
+
+    100% {
+      background-position: 0 100%;
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      opacity: 0.8;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin-reverse-slower {
+    from {
+      transform: rotate(360deg);
+    }
+
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+  }
+
+  .animate-spin-reverse-slower {
+    animation: spin-reverse-slower 30s linear infinite;
+  }
+
+  /* --- EXTREME UI ANIMATIONS --- */
+
+  /* Digital Grid Background */
+  .bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(34, 197, 94, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(34, 197, 94, 0.05) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .animate-grid-move {
+    animation: grid-move 20s linear infinite;
+  }
+
+  @keyframes grid-move {
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(40px);
+    }
+  }
+
+  /* Glitch Text Effect */
+  .glitch {
+    position: relative;
+    color: white;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #09090b;
+    /* Match background */
+  }
+
+  .glitch::before {
+    left: 2px;
+    text-shadow: -1px 0 #00ff00;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+
+  .glitch::after {
+    left: -2px;
+    text-shadow: -1px 0 #ff0000;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+  }
+
+  @keyframes glitch-anim {
+    0% {
+      clip: rect(42px, 9999px, 44px, 0);
+    }
+
+    5% {
+      clip: rect(12px, 9999px, 59px, 0);
+    }
+
+    10% {
+      clip: rect(48px, 9999px, 29px, 0);
+    }
+
+    15.0% {
+      clip: rect(42px, 9999px, 73px, 0);
+    }
+
+    20% {
+      clip: rect(63px, 9999px, 27px, 0);
+    }
+
+    100% {
+      clip: rect(34px, 9999px, 55px, 0);
+    }
+  }
+
+  @keyframes glitch-anim2 {
+    0% {
+      clip: rect(65px, 9999px, 100px, 0);
+    }
+
+    5% {
+      clip: rect(52px, 9999px, 74px, 0);
+    }
+
+    10% {
+      clip: rect(79px, 9999px, 85px, 0);
+    }
+
+    15% {
+      clip: rect(75px, 9999px, 5px, 0);
+    }
+
+    20% {
+      clip: rect(67px, 9999px, 61px, 0);
+    }
+
+    100% {
+      clip: rect(14px, 9999px, 79px, 0);
+    }
+  }
+
+  /* CRT Flicker */
+  .crt-flicker {
+    animation: flicker 0.15s infinite;
+  }
+
+  @keyframes flicker {
+    0% {
+      opacity: 0.97;
+    }
+
+    5% {
+      opacity: 0.95;
+    }
+
+    10% {
+      opacity: 0.9;
+    }
+
+    15% {
+      opacity: 0.95;
+    }
+
+    20% {
+      opacity: 0.99;
+    }
+
+    50% {
+      opacity: 0.95;
+    }
+
+    55% {
+      opacity: 0.93;
+    }
+
+    60% {
+      opacity: 0.9;
+    }
+
+    95% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0.98;
+    }
+  }
+}
